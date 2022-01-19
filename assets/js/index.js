@@ -62,30 +62,46 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     //VARIABLES
-
     let deck = [];
     const suits = ['C', 'D', 'H', 'S'];
     const figures = ['A', 'J', 'Q', 'K'];
 
+    //Crea una nueva Baraja
     const createDeck = () => {
 
         for( let i = 2; i <= 10; i++){
             for (suit of suits) {
-                deck.push(i+suit);
+                deck.push(i + suit);
             }
         };
         for (figure of figures){
             for (suit of suits){
-                deck.push(figure+suit);
+                deck.push(figure + suit);
             }
         }
-        console.log(deck);
+
+        console.log(`Baraja completa: ${deck}`);
         deck = _.shuffle(deck);
         console.log(`Baraja Barajeada ${deck}`);
         return deck;
+    };
 
-    }; 
+    //Función para pedir carta
+    const pedirCarta = () => {
 
+        if ( deck.length === 0) {
+            throw 'No quedan mas cartas en el Mazo'
+        }
+
+        let lastCard = deck.pop();
+
+        console.log(lastCard)
+        return lastCard;
+    }
+    
+    //RUN
     createDeck();
+    pedirCarta();
+
 });
 
