@@ -95,13 +95,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let lastCard = deck.pop();
 
-        console.log(lastCard)
+        //console.log(lastCard);
         return lastCard;
+    }
+    
+    //Función Valor de una carta
+    const cardValue = (card) => {
+        let valor = card.slice(0, card.length - 1);
+        let puntos = 0;
+
+        if (isNaN(valor)) {
+            valor === 'A' ? puntos = 11 : puntos = 10
+        } else {
+            puntos = parseInt(valor);
+        }
+        
+        console.log(puntos);
+        return puntos;
     }
     
     //RUN
     createDeck();
-    pedirCarta();
+    //pedirCarta();
+    cardValue(pedirCarta());
 
 });
 
