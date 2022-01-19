@@ -65,7 +65,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let deck = [];
     const suits = ['C', 'D', 'H', 'S'];
     const figures = ['A', 'J', 'Q', 'K'];
+    let playerPoints = 0;
+    let pcPoints = 0;
 
+    //REFERENCIAS HTML
+    const btnPedir = document.getElementById('btnPedir');
+    const btnDetener = document.getElementById('btnDetener');
+    const btnNuevo = document.getElementById('btnNuevo');
+    const score = document.querySelectorAll('small');
+    const cartasJugador = document.getElementById('jugador-cartas');
+    const cartasPC = document.getElementById('computadora-cartas');
     //Crea una nueva Baraja
     const createDeck = () => {
 
@@ -101,23 +110,86 @@ document.addEventListener('DOMContentLoaded', () => {
     
     //Función Valor de una carta
     const cardValue = (card) => {
-        let valor = card.slice(0, card.length - 1);
-        let puntos = 0;
+        let value = card.slice(0, card.length - 1);
+        let points = 0;
 
-        if (isNaN(valor)) {
-            valor === 'A' ? puntos = 11 : puntos = 10
+        if (isNaN(value)) {
+            value === 'A' ? points = 11 : points = 10
         } else {
-            puntos = parseInt(valor);
+            points = parseInt(value);
         }
         
-        console.log(puntos);
-        return puntos;
+        console.log(`carta sacada: ${points}`);
+        return points;
     }
+
+    //TURNO PC
+    const playerPC = (puntosMinimos) => {
+        do {
+            const card = pedirCarta();
+            console.log(`card = ${card}`)
+            pcPoints = pcPoints + cardValue( card );
+            score[1].innerHTML = pcPoints
+            
+            const imgCard = document.createElement('img');
+            imgCard.src = `assets/cartas/${card}.png`
+            imgCard.classList.add('carta')
+            cartasPC.appendChild(imgCard);
+
+            if ( puntosMinimos > 21) {
+                break;
+            }
+
+        } while( pcPoints < puntosMinimos && puntosMinimos < 22 );
+    };
     
+    //EVENTOS
+    btnPedir.addEventListener('click', () => {
+
+        const card = pedirCarta();
+        console.log(`card = ${card}`)
+        playerPoints = playerPoints + cardValue( card );
+        score[0].innerHTML = playerPoints
+        
+        const imgCard = document.createElement('img');
+        //const cartel = document.createElement('div')
+        //imgCard.setAttribute('src', 'assets/cartas/' + card + '.png')
+        imgCard.src = `assets/cartas/${card}.png`
+        //imgCard.setAttribute('class', 'carta')
+        imgCard.classList.add('carta')
+        cartasJugador.appendChild(imgCard);
+
+        if( playerPoints > 21 ) {
+            console.warn('Lo siento mucho, perdiste')
+            btnPedir.disabled = true;
+            btnDetener.disabled = true;
+            // while (cartasJugador.lastElementChild) {
+            //     cartasJugador.removeChild(cartasJugador.lastElementChild)
+            // }
+            // cartasJugador.appendChild(cartel);
+            // cartel.innerHTML = 'Has perdido'
+            playerPC(playerPoints)
+        } else if ( playerPoints === 21 ) {
+            console.warn('21, GENIAL Has Ganado!')
+            btnPedir.disabled = true;
+            btnDetener.disabled = true;
+            playerPC(playerPoints)
+        }
+        console.log(`Puntuación : ${playerPoints}`);
+        
+    });
+
+    btnDetener.addEventListener('click', () => {
+        btnPedir.disabled = true;
+        btnDetener.disabled = true;
+
+        playerPC(playerPoints);
+    });
+
     //RUN
     createDeck();
     //pedirCarta();
-    cardValue(pedirCarta());
+    //cardValue(pedirCarta());
 
 });
 
