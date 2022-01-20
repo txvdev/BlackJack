@@ -1,65 +1,3 @@
-// document.addEventListener('DOMContentLoaded', () => {
-    
-//     const btnPedir = document.getElementById('btnPedir');
-//     const jugadorCartas = document.getElementById('jugador-cartas');
-    
-//     // Variables
-//     let deck = [];
-//     const tipos = ['C', 'D', 'H', 'S'];
-//     const special = ['A', 'J', 'Q', 'K']
-
-//     // Crea la Baraja
-//     const crearDeck = () => {
-
-//         for( let i = 2; i <= 10; i++) {
-//             for (let tipo of tipos){
-//                 deck.push(i + tipo);
-//             } 
-//         }
-
-//         for (let tipo of tipos) {
-//             for (let esp of special) {
-//                 deck.push(esp + tipo)
-//             }
-//         }
-
-//         //console.log(deck);
-//         deck = _.shuffle(deck);
-//         console.log(`Baraja Barajeada ${deck}`);
-//         return deck;
-//     }
-
-//     // Regresa una Carta
-//     const pedirCarta = () => {
-//         if (deck.length === 0) {
-//             throw 'No hay mas cartas en el Mazo'
-//         }
-
-//         const lastCard = deck.pop();
-//         console.log(deck);
-//         console.log(lastCard);
-//         return lastCard;
-//     }
-
-//     const cardValue = (lastCard) => {
-//         const valor = lastCard.substring(0, lastCard.length - 1);
-//         let puntos = 0;
-
-//         if (isNaN(valor)) {
-//             puntos = ( valor === 'A' ) ? 11 : 10;
-//         } else {
-//             puntos = parseInt(valor);
-//         }
-
-//         console.log(puntos);
-//     }
-
-//     crearDeck()
-//     pedirCarta();
-//     cardValue('Kd');
-    
-// })
-
 document.addEventListener('DOMContentLoaded', () => {
     //VARIABLES
     let deck = [];
@@ -89,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        console.log(`Baraja completa: ${deck}`);
+        //console.log(`Baraja completa: ${deck}`);
         deck = _.shuffle(deck);
-        console.log(`Baraja Barajeada ${deck}`);
+        //console.log(`Baraja Barajeada ${deck}`);
         return deck;
     };
 
@@ -119,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             points = parseInt(value);
         }
         
-        console.log(`carta sacada: ${points}`);
+        //console.log(`carta sacada: ${points}`);
         return points;
     }
 
@@ -141,6 +79,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         } while( pcPoints < puntosMinimos && puntosMinimos < 22 );
+
+        setTimeout (() => {
+            if ( pcPoints === puntosMinimos ){
+                alert('Nadie gana')
+            } else if ( puntosMinimos > 21 ) {
+                alert('Computadora gana')
+            } else if (pcPoints > 21) {
+                alert('Has ganado!!!')
+            } else {
+                alert('Ha ganado la Computadora')
+            }
+        }, 305);
     };
     
     //EVENTOS
@@ -175,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btnDetener.disabled = true;
             playerPC(playerPoints)
         }
-        console.log(`Puntuación : ${playerPoints}`);
+        //console.log(`Puntuación : ${playerPoints}`);
         
     });
 
@@ -184,6 +134,26 @@ document.addEventListener('DOMContentLoaded', () => {
         btnDetener.disabled = true;
 
         playerPC(playerPoints);
+    });
+
+    btnNuevo.addEventListener('click', () => {
+        //location.reload();
+        console.clear();
+        deck = []
+        deck = createDeck();
+
+        playerPoints = 0;
+        pcPoints = 0;
+
+        score[0].innerText = 0;
+        score[1].innerText = 0;
+
+        cartasJugador.innerHTML = '';
+        cartasPC.innerHTML = '';
+
+        btnPedir.disabled = false;
+        btnDetener.disabled = false;
+
     });
 
     //RUN
